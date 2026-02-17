@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 WhatsApp Bot - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🤖 WhatsApp Auto-Reply Bot</h1>
+                <div class="status-badge" id="statusBadge">
+                    <span class="status-dot"></span>
+                    <span id="statusText">Conectando...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <nav class="nav">
+                    <button class="nav-item active" data-section="dashboard">
+                        📊 Dashboard
+                    </button>
+                    <button class="nav-item" data-section="messages">
+                        💬 Mensagens (<span id="messageCount">0</span>)
+                    </button>
+                    <button class="nav-item" data-section="settings">
+                        ⚙️ Configurações
+                    </button>
+                    <button class="nav-item" data-section="help">
+                        ❓ Ajuda
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <section class="content">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="section active">
+                    <h2>📊 Dashboard</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">💬</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Mensagens Recebidas</div>
+                                <div class="stat-value" id="statMessages">0</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Respondidas</div>
+                                <div class="stat-value" id="statReplied">0</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">🤖</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Bot Status</div>
+                                <div class="stat-value" id="botStatusValue">Ativo</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">⏰</div>
+                            <div class="stat-content">
+                                <div class="stat-label">Última Verificação</div>
+                                <div class="stat-value" id="lastCheckTime">--:--</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-messages">
+                        <h3>📱 Últimas Mensagens</h3>
+                        <div id="recentMessagesList" class="messages-list">
+                            <p class="empty-state">Nenhuma mensagem ainda...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Messages Section -->
+                <section id="messages" class="section">
+                    <div class="section-header">
+                        <h2>💬 Todas as Mensagens</h2>
+                        <div class="section-actions">
+                            <button id="refreshBtn" class="btn btn-secondary">🔄 Atualizar</button>
+                            <button id="clearBtn" class="btn btn-danger">🗑️ Limpar</button>
+                        </div>
+                    </div>
+
+                    <div id="messagesList" class="messages-list">
+                        <p class="empty-state">Nenhuma mensagem para exibir</p>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings" class="section">
+                    <h2>⚙️ Configurações do Bot</h2>
+
+                    <div class="settings-card">
+                        <h3>Resposta Automática</h3>
+                        
+                        <div class="setting-item">
+                            <label class="switch">
+                                <input type="checkbox" id="autoReplyToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <label for="autoReplyToggle" class="setting-label">
+                                Habilitar Resposta Automática
+                            </label>
+                        </div>
+
+                        <div class="setting-item">
+                            <label for="autoReplyText">Mensagem de Resposta Automática:</label>
+                            <textarea id="autoReplyText" rows="4" placeholder="Digite a mensagem de resposta automática...">Olá! 👋 Obrigado pela sua mensagem. Estou em atendimento automático no momento. Em breve responderei sua mensagem com mais detalhes. Tenha um ótimo dia! 😊</textarea>
+                            <div class="setting-hint">
+                                Dica: Use emojis para deixar a mensagem mais amigável 😊
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>Notificações</h3>
+                        
+                        <div class="setting-item">
+                            <label class="switch">
+                                <input type="checkbox" id="soundToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <label for="soundToggle" class="setting-label">
+                                Notificação Sonora ao Receber Mensagem
+                            </label>
+                        </div>
+
+                        <button id="testSoundBtn" class="btn btn-secondary">🔔 Testar Som</button>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3>Telefone do Proprietário</h3>
+                        
+                        <div class="setting-item">
+                            <label for="ownerPhone">Número de Telefone (com código do país):</label>
+                            <input type="text" id="ownerPhone" placeholder="5511999999999" class="input-field">
+                            <div class="setting-hint">
+                                Exemplo: 5511999999999 (55 = Brasil, 11 = São Paulo)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button id="saveSettingsBtn" class="btn btn-primary">💾 Salvar Configurações</button>
+                        <button id="testWebhookBtn" class="btn btn-secondary">🧪 Testar Webhook</button>
+                    </div>
+                </section>
+
+                <!-- Help Section -->
+                <section id="help" class="section">
+                    <h2>❓ Ajuda e Instruções</h2>
+
+                    <div class="help-card">
+                        <h3>🚀 Como Configurar</h3>
+                        <ol>
+                            <li><strong>Criar conta Twilio</strong> - Acesse https://www.twilio.com e faça login</li>
+                            <li><strong>Ativar WhatsApp Sandbox</strong> - Na seção "Messaging" → "Try it out" → "Send a WhatsApp message"</li>
+                            <li><strong>Copiar credenciais</strong> - Account SID e Auth Token</li>
+                            <li><strong>Criar arquivo .env</strong> - No mesmo diretório do server.js</li>
+                            <li><strong>Adicionar variáveis de ambiente</strong>:
+                                <pre>TWILIO_ACCOUNT_SID=seu_account_sid
+TWILIO_AUTH_TOKEN=seu_auth_token_here
+TWILIO_PHONE_NUMBER=whatsapp:+1564560268
+OWNER_PHONE=5511913274243
+PORT=3000</pre>
+                            </li>
+                            <li><strong>Configurar Webhook</strong> - Na console Twilio, apontar para: <code>http://seu-ip:3000/webhook/messages</code></li>
+                            <li><strong>Iniciar servidor</strong> - Execute <code>npm start</code></li>
+                        </ol>
+                    </div>
+
+                    <div class="help-card">
+                        <h3>🤖 Como Funciona</h3>
+                        <ul>
+                            <li>Quando alguém envia uma mensagem para seu WhatsApp, o bot recebe a notificação</li>
+                            <li>O bot envia automaticamente a mensagem de resposta configurada</li>
+                            <li>Você recebe um som de notificação (opcional)</li>
+                            <li>A mensagem é armazenada no Dashboard para você revisar depois</li>
+                            <li>Você pode responder manualmente no WhatsApp sempre que quiser</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-card">
+                        <h3>📝 Variáveis Disponíveis</h3>
+                        <p>Na sua mensagem de resposta automática, você pode usar:</p>
+                        <ul>
+                            <li><code>{nome}</code> - Nome do contato (quando disponível)</li>
+                            <li><code>{hora}</code> - Hora atual</li>
+                            <li><code>{data}</code> - Data atual</li>
+                            <li>Emojis - Para deixar mais divertido! 😊</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-card">
+                        <h3>⚠️ Troubleshooting</h3>
+                        <ul>
+                            <li><strong>Mensagens não chegam?</strong> - Verifique se o webhook está correto no Twilio</li>
+                            <li><strong>Erro de credenciais?</strong> - Verifique se as variáveis estão no arquivo .env</li>
+                            <li><strong>Porta já em uso?</strong> - Mude a porta no arquivo .env: PORT=3001</li>
+                            <li><strong>Não recebe som?</strong> - Ative o som do navegador e permita notificações</li>
+                        </ul>
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3 id="confirmTitle">Confirmar Ação</h3>
+            <p id="confirmMessage">Tem certeza?</p>
+            <div class="modal-actions">
+                <button id="confirmYes" class="btn btn-danger">Sim, confirmar</button>
+                <button id="confirmNo" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
